@@ -124,7 +124,6 @@ def rag_qanda(question, lang_choise, session_id=None):
     KB_FIELDS_SOURCEPAGE = os.environ.get("KB_FIELDS_SOURCEPAGE") or "sourcepage"
 
     exclude_category = None
-
     print("Searching:", user_input)
     actual_user_input = user_input
     if lang_choise != "English":
