@@ -185,7 +185,7 @@ def rag_qanda(question, lang_choise, session_id=None):
         response_embedding = get_embedding(reply)
         similarity_score = cosine_similarity(response_embedding, retrieved_embedding)
         if similarity_score < HALLUCINATION_SIMILAR_THRESHOLD:
-            reply += "\n\n⚠️ Warning: This answer may not be fully supported by retrieved documents."
+            reply = "\n\n⚠️ Warning: This answer may not be fully supported by retrieved documents."
     ## End of Hallucination Detection, Comment out if not needed
     ## Hallucination Detection using LLM-Based Revalidation
     if HALLUCINATION_LLM_BASED:
