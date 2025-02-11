@@ -190,7 +190,7 @@ def rag_qanda(question, lang_choise, session_id=None):
     ## Hallucination Detection using LLM-Based Revalidation
     if HALLUCINATION_LLM_BASED:
         validation_prompt = f"""
-        You are an AI tasked with validating answers against provided documents. Your ONLY task is to validate whether the given answer is fully supported by the retrieved documents.
+        You are an AI tasked with strict fact verification. Follow these instructions exactly:
         
         ### Retrieved Documents ###
         {content}
@@ -198,19 +198,19 @@ def rag_qanda(question, lang_choise, session_id=None):
         ### Given Answer ###
         {reply}
 
-        ### Verification Task ###
-        1️⃣ If the retrieved documents **fully support** the answer, return the answer as is.
-        2️⃣ If **ANY part** of the answer is NOT supported by the retrieved documents, **remove it completely**.
-        3️⃣ If there is **NO support** for the answer, return EXACTLY:
-        **"There is no verified information available in the provided documents."**
-        4️⃣ **DO NOT attempt to provide additional information** or make assumptions.
-        5️⃣ **DO NOT generate any extra text** outside the retrieved documents.
-        
-        ### Strictly Verified Answer ###
+        ### Strict Verification Rules ###
+        1️⃣ **ONLY return information that is present in the retrieved documents.**
+        2️⃣ **If any part of the answer is unsupported, remove it completely.**
+        3️⃣ **If there is no supporting information in the retrieved documents, return EXACTLY:**
+           **"There is no verified information available in the provided documents."**
+        4️⃣ **DO NOT generate any additional explanations, assumptions, or alternative information.**
+        5️⃣ **DO NOT attempt to infer answers from general knowledge. Only use the retrieved documents.**
+
+        ### Strictly Verified Answer (DO NOT DEVIATE FROM THESE RULES) ###
         """
         validate_answer = [{"role": "user", "content": validation_prompt}]
         validated_answer = generate_answer(validate_answer)
-        if "I don't know" in validated_answer or "not supported" in validated_answer.lower() or "not contain any information" in validated_answer.lower():
+        if "I don't know" in validated_answer or "not supported" in validated_answer.lower() or "not contain any information" in validated_answer.lower() or "no verified information" in validated_answer.lower() or validated_answer.strip() == "":
             reply = "⚠️ Warning: The answer could not be fully verified. Please consult official tax sources."
     ## End of Hallucination Detection, Comment out if not needed
 
