@@ -190,7 +190,7 @@ def rag_qanda(question, lang_choise, session_id=None):
     ## Hallucination Detection using LLM-Based Revalidation
     if HALLUCINATION_LLM_BASED:
         validation_prompt = f"""
-        You are an AI tasked with validating answers against provided documents.
+        You are an AI tasked with validating answers against provided documents. Your ONLY task is to validate whether the given answer is fully supported by the retrieved documents.
         
         ### Retrieved Documents ###
         {content}
@@ -199,12 +199,14 @@ def rag_qanda(question, lang_choise, session_id=None):
         {reply}
 
         ### Verification Task ###
-        - Check if the given answer is fully supported by the retrieved documents.
-        - If the answer is partially correct but contains extra details, **remove the unsupported parts**.
-        - Only respond with verified information. If nothing relevant is found, say:
+        1️⃣ If the retrieved documents **fully support** the answer, return the answer as is.
+        2️⃣ If **ANY part** of the answer is NOT supported by the retrieved documents, **remove it completely**.
+        3️⃣ If there is **NO support** for the answer, return EXACTLY:
         **"There is no verified information available in the provided documents."**
+        4️⃣ **DO NOT attempt to provide additional information** or make assumptions.
+        5️⃣ **DO NOT generate any extra text** outside the retrieved documents.
         
-        ### Verified Answer ###
+        ### Strictly Verified Answer ###
         """
         validate_answer = [{"role": "user", "content": validation_prompt}]
         validated_answer = generate_answer(validate_answer)
