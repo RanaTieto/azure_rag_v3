@@ -61,7 +61,7 @@ def generate_answer(conversation):
                 }
             ]},
         #enhancements=None,
-        temperature=0.1,
+        temperature=0.0,
         top_p=0.1,
         #max_tokens=800,
         stop=None ,
