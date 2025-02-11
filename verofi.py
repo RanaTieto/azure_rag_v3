@@ -210,7 +210,7 @@ def rag_qanda(question, lang_choise, session_id=None):
         """
         validate_answer = [{"role": "user", "content": validation_prompt}]
         validated_answer = generate_answer(validate_answer)
-        if "I don't know" in validated_answer or "not supported" in validated_answer.lower():
+        if "I don't know" in validated_answer or "not supported" in validated_answer.lower() or "not contain any information" in validated_answer.lower():
             reply = "⚠️ Warning: The answer could not be fully verified. Please consult official tax sources."
     ## End of Hallucination Detection, Comment out if not needed
 
