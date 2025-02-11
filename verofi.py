@@ -200,9 +200,10 @@ def rag_qanda(question, lang_choise, session_id=None):
 
         ### Verification Task ###
         - Check if the given answer is fully supported by the retrieved documents.
-        - If any part is unsupported, correct it or state: "I don't know."
-        - Provide a corrected version if possible.
-
+        - If the answer is partially correct but contains extra details, **remove the unsupported parts**.
+        - Only respond with verified information. If nothing relevant is found, say:
+        **"There is no verified information available in the provided documents."**
+        
         ### Verified Answer ###
         """
         validate_answer = [{"role": "user", "content": validation_prompt}]
