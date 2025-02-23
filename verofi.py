@@ -190,7 +190,7 @@ def rag_qanda(question, lang_choise, session_id=None):
     ## Hallucination Detection using LLM-Based Revalidation
     if HALLUCINATION_LLM_BASED:
         validation_prompt = f"""
-        You are an AI tasked with strict fact verification. Follow these instructions exactly:
+        You are an AI tasked with validating answers against provided documents:
         
         ### Retrieved Documents ###
         {content}
