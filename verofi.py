@@ -199,12 +199,10 @@ def rag_qanda(question, lang_choise, session_id=None):
         {reply}
 
         ### Strict Verification Rules ###
-        1️⃣ **ONLY return information that is present in the retrieved documents.**
-        2️⃣ **If any part of the answer is unsupported, remove it completely.**
-        3️⃣ **If there is no supporting information in the retrieved documents, return EXACTLY:**
-           **"There is no verified information available in the provided documents."**
-        4️⃣ **DO NOT generate any additional explanations, assumptions, or alternative information.**
-        5️⃣ **DO NOT attempt to infer answers from general knowledge. Only use the retrieved documents.**
+        1️⃣ **Check if the answer is supported by the retrieved documents, even if it is paraphrased.**  
+        2️⃣ **If the answer is correct but worded differently, mark it as verified.**  
+        3️⃣ **If the answer contains unsupported details, remove them but keep the correct parts.**  
+        4️⃣ **If no relevant information exists at all, return: "No relevant document found."*
 
         ### Strictly Verified Answer (DO NOT DEVIATE FROM THESE RULES) ###
         """
